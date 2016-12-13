@@ -1,5 +1,5 @@
 close all;
-addpath('src'); 
+addpath('src');
 addpath('util');
 param = config();
 
@@ -20,7 +20,7 @@ switch(selection)
         % MPI score 87.9% @ PCKh0.5
     case 4
         benchmark_data = 'LSP';
-        benchmark_modelID = 3; % LSP model 
+        benchmark_modelID = 3; % LSP model
         % LSP score 84.32% total PCK@0.2
     case 5
         benchmark_data = 'FLIC';

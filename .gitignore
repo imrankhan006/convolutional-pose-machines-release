@@ -10,4 +10,8 @@ testing/results/
 *.m~
 caffePath.cfg
 models/
+*.mat
+testing/predicts/*
+testing/predicts/ours/*
 testing/python/.*
+testing/sample_image/*

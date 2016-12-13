@@ -37,9 +37,9 @@ def writeLMDB(datasets, lmdb_path, validation):
 				data = data + data_this
 			numSample = len(data)
 			print numSample
-	
+
 	random_order = np.random.permutation(numSample).tolist()
-	
+
 	isValidationArray = [data[i]['isValidation'] for i in range(numSample)];
 	if(validation == 1):
 		totalWriteCount = isValidationArray.count(0.0);
@@ -61,7 +61,7 @@ def writeLMDB(datasets, lmdb_path, validation):
 			path_header = '../dataset/LEEDS/'
 		elif "FLIC" in data[idx]['dataset']:
 			path_header = '../dataset/FLIC/'
-		
+
 		img = cv2.imread(os.path.join(path_header, data[idx]['img_paths']))
 		height = img.shape[0]
 		width = img.shape[1]
@@ -148,8 +148,8 @@ def writeLMDB(datasets, lmdb_path, validation):
 					for j in range(len(row_binary)):
 						meta_data[clidx][j] = ord(row_binary[j])
 					clidx = clidx + 1
-		
-		# print meta_data[0:12,0:48] 
+
+		# print meta_data[0:12,0:48]
 		# total 7+4*nop lines
 		img4ch = np.concatenate((img, meta_data), axis=2)
 		img4ch = np.transpose(img4ch, (2, 0, 1))
@@ -172,10 +172,10 @@ def float2bytes(floats):
 	return struct.pack('%sf' % len(floats), *floats)
 
 if __name__ == "__main__":
-	
+
 	#writeLMDB(['MPI'], 'lmdb/MPI_train_split', 1) # only include split training data (validation data is held out)
 	#writeLMDB(['MPI'], 'lmdb/MPI_alltrain', 0)
-	#writeLMDB(['LEEDS'], 'lmdb/LEEDS_PC', 0)
+	writeLMDB(['LEEDS'], 'lmdb/LEEDS_PC', 0)
 	#writeLMDB(['FLIC'], 'lmdb/FLIC', 0)
 
-	writeLMDB(['MPI', 'LEEDS'], 'lmdb/MPI_LEEDS_alltrain', 0) # joint dataset
+	#writeLMDB(['MPI', 'LEEDS'], 'lmdb/MPI_LEEDS_alltrain', 0) # joint dataset

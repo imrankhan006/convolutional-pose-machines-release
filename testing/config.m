@@ -3,7 +3,7 @@ function param = config()
 
 % CPU mode (0) or GPU mode (1)
 % friendly warning: CPU mode may take a while
-param.use_gpu = 1;
+param.use_gpu =1;
 
 % GPU device number (doesn't matter for CPU mode)
 GPUdeviceNumber = 0;
@@ -55,7 +55,7 @@ param.model(1).part_str = {'head', 'neck', 'Rsho', 'Relb', 'Rwri', ...
                          'Lsho', 'Lelb', 'Lwri', ...
                          'Rhip', 'Rkne', 'Rank', ...
                          'Lhip', 'Lkne', 'Lank', 'bkg'};
-                     
+
 param.model(2).caffemodel = '../model/_trained_MPI/pose_iter_630000.caffemodel';
 param.model(2).deployFile = '../model/_trained_MPI/pose_deploy_centerMap.prototxt';
 param.model(2).description = 'MPII 6-stage CPM';
@@ -70,7 +70,7 @@ param.model(2).part_str = {'head', 'neck', 'Rsho', 'Relb', 'Rwri', ...
                          'Lsho', 'Lelb', 'Lwri', ...
                          'Rhip', 'Rkne', 'Rank', ...
                          'Lhip', 'Lkne', 'Lank', 'bkg'};
-                     
+
 param.model(3).caffemodel = '../model/_trained_LEEDS_PC/pose_iter_395000.caffemodel';
 param.model(3).deployFile = '../model/_trained_LEEDS_PC/pose_deploy_centerMap.prototxt';
 param.model(3).description = 'LSP (PC) 6-stage CPM';
@@ -85,7 +85,7 @@ param.model(3).part_str = {'head', 'neck', 'Rsho', 'Relb', 'Rwri', ...
                          'Lsho', 'Lelb', 'Lwri', ...
                          'Rhip', 'Rkne', 'Rank', ...
                          'Lhip', 'Lkne', 'Lank', 'bkg'};
-                     
+
 param.model(4).caffemodel = '../model/_trained_FLIC/pose_iter_40000.caffemodel';
 param.model(4).deployFile = '../model/_trained_FLIC/pose_deploy.prototxt';
 param.model(4).description = 'FLIC (upper body only) 4-stage CPM';
