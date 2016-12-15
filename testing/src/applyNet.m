@@ -1,29 +1,30 @@
-function [heatMaps, prediction] = applyModel(test_image, param, rectangle)
+function [heatMaps, prediction] = applyNet(test_image, net, param)
 
 %% Select model and other parameters from param
 model = param.model(param.modelID);
 boxsize = model.boxsize;
 np = model.np;
 nstage = model.stage;
-oriImg = imread(test_image);
+%oriImg = imread(test_image);
+oriImg = test_image;
 
 %% Apply model, with searching thourgh a range of scales
 octave = param.octave;
 % set the center and roughly scale range (overwrite the config!) according to the rectangle
-x_start = max(rectangle(1), 1);
-x_end = min(rectangle(1)+rectangle(3), size(oriImg,2));
-y_start = max(rectangle(2), 1);
-y_end = min(rectangle(2)+rectangle(4), size(oriImg,1));
-center = [(x_start + x_end)/2, (y_start + y_end)/2];
+%x_start = max(rectangle(1), 1);
+%x_end = min(rectangle(1)+rectangle(3), size(oriImg,2));
+%y_start = max(rectangle(2), 1);
+%y_end = min(rectangle(2)+rectangle(4), size(oriImg,1));
 
 % determine scale range
-middle_range = (y_end - y_start) / size(oriImg,1) * 1.2;
-starting_range = middle_range * 0.8;
-ending_range = middle_range * 3.0;
+%middle_range = (y_end - y_start) / size(oriImg,1) * 1.2;
+%starting_range = middle_range * 0.8;
+%ending_range = middle_range * 3.0;
 
-starting_scale = boxsize/(size(oriImg,1)*ending_range);
-ending_scale = boxsize/(size(oriImg,1)*starting_range);
-multiplier = 2.^(log2(starting_scale):(1/octave):log2(ending_scale));
+%starting_scale = boxsize/(size(oriImg,1)*ending_range);
+%ending_scale = boxsize/(size(oriImg,1)*starting_range);
+%multiplier = 2.^(log2(starting_scale):(1/octave):log2(ending_scale));
+multiplier = 1.1 % fit realtime human pose estimated by mindcont 2016/12/15
 
 % data container for each scale and stage
 score = cell(nstage, length(multiplier));
@@ -31,13 +32,14 @@ pad = cell(1, length(multiplier));
 ori_size = cell(1, length(multiplier));
 
 %net = caffe.Net(model.deployFile, model.caffemodel, 'test');
-% change outputs to enable visualizing stagewise results
+% change outputs to enable visualizing sagewise results
 % note this is why we keep out own copy of m-files of caffe wrapper
+
+center = [size(oriImg,2), size(oriImg,1)]/2;
 
 colors = hsv(length(multiplier));
 for m = 1:length(multiplier)
     scale = multiplier(m);
-
     imageToTest = imresize(oriImg, scale);
     ori_size{m} = size(imageToTest);
     center_s = center * scale;
@@ -50,10 +52,9 @@ for m = 1:length(multiplier)
     y = [0-pad_current(1), size(oriImg,1)*scale + pad_current(3)]/scale;
     plot([x(1) x(1) x(2) x(2) x(1)], [y(1) y(2) y(2) y(1) y(1)], 'Color', colors(m,:));
     drawnow;
-    % figure(m+2); imshow(imageToTest);
+    %figure(m+2); imshow(imageToTest);
 
     imageToTest = preprocess(imageToTest, 0.5, param);
-
     fprintf('Running FPROP for scale #%d/%d....', m, length(multiplier));
     tic;
     score(:,m) = applyDNN(imageToTest, net, nstage);
@@ -88,13 +89,13 @@ for j = 1:np
     [prediction(j,1), prediction(j,2)] = findMaximum(final_score{end}(:,:,j));
 end
 
-
 function img_out = preprocess(img, mean, param)
     img_out = double(img)/256;
     img_out = double(img_out) - mean;
     img_out = permute(img_out, [2 1 3]);
 
     img_out = img_out(:,:,[3 2 1]); % BGR for opencv training in caffe !!!!!
+    %title('image out'); imshow(img_out);
     boxsize = param.model(param.modelID).boxsize;
     centerMapCell = produceCenterLabelMap([boxsize boxsize], boxsize/2, boxsize/2, param.model(param.modelID).sigma);
     img_out(:,:,4) = centerMapCell{1};
@@ -111,7 +112,7 @@ function scores = applyDNN(images, net, nstage)
         blob_id = find(not(cellfun('isempty', blob_id_C)));
         blob_id = blob_id(end);
         scores{s} = net.blob_vec(blob_id).get_data();
-    end
+   end
 
 function [img_padded, pad] = padAround(img, boxsize, center, padValue)
     center = round(center);

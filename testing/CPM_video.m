@@ -3,8 +3,10 @@
 % In CVPR 2016
 % Please contact Shih-En Wei at shihenw@cmu.edu for any problems or questions
 %%
+
+
 close all;
-clear all;
+clear ;
 addpath('src');
 addpath('util');
 addpath('util/ojwoodford-export_fig-5735e6d/');
@@ -20,36 +22,32 @@ fprintf('Description of selected model: %s \n', param.model(param.modelID).descr
 %test_image = 'sample_image/roger.png';
 %test_image = 'sample_image/nadal.png';
 %test_image = 'sample_image/LSP_test/im1640.jpg';
-%test_image = 'sample_image/CMU_panoptic/00000998_01_01.png';
-%test_image = 'sample_image/CMU_panoptic/00004780_01_01.png';
 %test_image = 'sample_image/FLIC_test/princess-diaries-2-00152201.jpg';
 %test_image = 'sample_image/videos/jpg/original_frame37.jpg';
-test_image = 'sample_image/test1.png';
+%test_image = 'sample_image/dancer.png';
+%test_image = 'sample_image/103429.jpg';
+%test_image='sample_image/videos/jpg/jpgoriginal_frame10.jpg'
 
-%interestPart = 'Lwri'; % to look across stages. check available names in config.m
+%interestPart = 'head'; % to look across stages. check available names in config.m
 
-%v = VideoReader('sample_image/videos/handshake_left.avi');
-%test_image = readFrame(v);
-
-%% core: apply model on the image, to get heat maps and prediction coordinates
-figure(1);
-imshow(test_image);
-hold on;
-%title('Drag a bounding box');
-%rectangle = getrect(1);
-%[heatMaps, prediction] = applyModel(test_image, param, rectangle);
-[heatMaps, prediction] = applyModel(test_image, param);
-
-%% visualize, or extract variable heatMaps & prediction for your use
-%visualize(test_image, heatMaps, prediction, param, rectangle, interestPart);
-
-
-%imshow(im(y_start:y_end, x_start:x_end, :));
-hold on;
-bodyHeight = max(prediction(:,2)) - min(prediction(:,2));
+v = VideoReader('./sample_image/videos/minh_640_480.ogv');
+nFrames = v.NumberOfFrames;
+fprintf('video Name is:%s \nHeight: %d\nWidth: %d\nFrameRate: %d\nVideoFormat: %s\ntotalFrames: %d\n',v.Name,v.Height,v.Width,v.FrameRate,v.VideoFormat,v.NumberOfFrames);
 model = param.model(param.modelID);
+net = caffe.Net(model.deployFile, model.caffemodel, 'test');
 
-%plot_visible_limbs(model, facealpha, prediction, truncate, bodyHeight/30);
-plot_visible_limbs(model, facealpha, prediction, bodyHeight/30);
-plot(prediction(:,1), prediction(:,2), 'k.', 'MarkerSize', bodyHeight/32);
-title('Full Pose');
+for k = 1 : nFrames
+    test_image = read(v, k);%读取第k帧
+
+    %% core: apply model on the image, to get heat maps and prediction coordinates
+    figure(1);
+    imshow(test_image);
+    hold on;
+
+    [heatMaps, prediction] = applyNet(test_image,net,param);
+    bodyHeight = max(prediction(:,2)) - min(prediction(:,2));
+
+    plot_visible_skeleton(model, facealpha, prediction, bodyHeight/30);
+    title('Full Pose');
+
+end

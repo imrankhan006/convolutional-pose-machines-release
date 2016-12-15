@@ -17,8 +17,8 @@ fprintf('Description of selected model: %s \n', param.model(param.modelID).descr
 %test_image = 'sample_image/singer.jpg';
 %test_image = 'sample_image/shihen.png';
 %test_image = 'sample_image/roger.png';
-%test_image = 'sample_image/nadal.png';
-test_image = 'sample_image/LSP_test/im1640.jpg';
+test_image = 'sample_image/nadal.png';
+%test_image = 'sample_image/LSP_test/im1640.jpg';
 %test_image = 'sample_image/CMU_panoptic/00000998_01_01.png';
 %test_image = 'sample_image/CMU_panoptic/00004780_01_01.png';
 %test_image = 'sample_image/FLIC_test/princess-diaries-2-00152201.jpg';
