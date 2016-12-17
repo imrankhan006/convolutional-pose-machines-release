@@ -37,7 +37,7 @@ model = param.model(param.modelID);
 net = caffe.Net(model.deployFile, model.caffemodel, 'test');
 
 for k = 1 : nFrames
-    test_image = read(v, k);%读取第k帧
+    test_image = read(v, k);
 
     %% core: apply model on the image, to get heat maps and prediction coordinates
     figure(1);
