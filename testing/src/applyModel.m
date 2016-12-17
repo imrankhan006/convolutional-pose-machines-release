@@ -30,7 +30,7 @@ score = cell(nstage, length(multiplier));
 pad = cell(1, length(multiplier));
 ori_size = cell(1, length(multiplier));
 
-%net = caffe.Net(model.deployFile, model.caffemodel, 'test');
+net = caffe.Net(model.deployFile, model.caffemodel, 'test');
 % change outputs to enable visualizing stagewise results
 % note this is why we keep out own copy of m-files of caffe wrapper
 

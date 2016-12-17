@@ -6,7 +6,7 @@ boxsize = model.boxsize;
 np = model.np;
 nstage = model.stage;
 %oriImg = imread(test_image);
-oriImg = test_image;
+oriImg = test_image; %ucomment for video test 
 
 %% Apply model, with searching thourgh a range of scales
 octave = param.octave;

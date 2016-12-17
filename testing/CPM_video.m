@@ -20,13 +20,13 @@ fprintf('Description of selected model: %s \n', param.model(param.modelID).descr
 %test_image = 'sample_image/singer.jpg';
 %test_image = 'sample_image/shihen.png';
 %test_image = 'sample_image/roger.png';
-%test_image = 'sample_image/nadal.png';
 %test_image = 'sample_image/LSP_test/im1640.jpg';
 %test_image = 'sample_image/FLIC_test/princess-diaries-2-00152201.jpg';
 %test_image = 'sample_image/videos/jpg/original_frame37.jpg';
-%test_image = 'sample_image/dancer.png';
+test_image = 'sample_image/dancer.png';
 %test_image = 'sample_image/103429.jpg';
 %test_image='sample_image/videos/jpg/jpgoriginal_frame10.jpg'
+%test_image = 'sample_image/nadal.png';
 
 %interestPart = 'head'; % to look across stages. check available names in config.m
 
@@ -36,18 +36,33 @@ fprintf('video Name is:%s \nHeight: %d\nWidth: %d\nFrameRate: %d\nVideoFormat: %
 model = param.model(param.modelID);
 net = caffe.Net(model.deployFile, model.caffemodel, 'test');
 
-for k = 1 : nFrames
-    test_image = read(v, k);
+% for k = 1 : nFrames
+%     test_image = read(v, k);
+%
+%     %% core: apply model on the image, to get heat maps and prediction coordinates
+%     figure(1);
+%     imshow(test_image);
+%     hold on;
+%
+%     [heatMaps, prediction] = applyNet(test_image,net,param);
+%     bodyHeight = max(prediction(:,2)) - min(prediction(:,2));
+%
+%     plot_visible_skeleton(model, facealpha, prediction, bodyHeight/30);
+%     draw_skeleton(prediction,test_image);
+%     title('Full Pose');
+%
+% end
 
-    %% core: apply model on the image, to get heat maps and prediction coordinates
-    figure(1);
-    imshow(test_image);
-    hold on;
 
-    [heatMaps, prediction] = applyNet(test_image,net,param);
-    bodyHeight = max(prediction(:,2)) - min(prediction(:,2));
+%% core: apply model on the image, to get heat maps and prediction coordinates
+figure(1);
+imshow(test_image);
+hold on;
+img = imread(test_image);
 
-    plot_visible_skeleton(model, facealpha, prediction, bodyHeight/30);
-    title('Full Pose');
+[heatMaps, prediction] = applyNet(img,net,param);
+bodyHeight = max(prediction(:,2)) - min(prediction(:,2));
 
-end
+plot_visible_skeleton(model, facealpha, prediction, bodyHeight/30);
+draw_skeleton(prediction,img);
+title('Full Pose');
