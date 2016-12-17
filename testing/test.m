@@ -21,43 +21,41 @@ close all;
 % end
 %%
 
+addpath('src/')
 addpath('../dataset/FLIC/');
+
 %% 加载lsp_dataset annotation 文件，并显示标注情况
 load('../dataset/LEEDS/lsp_dataset/joints.mat', 'joints');
 imgdir = '../dataset/LEEDS/lsp_dataset/images';
+
 %% display a random image
-i = randi(length(joints));
+%i = randi(length(joints));
+i =1;
+stickwidth = 4;
 
 img = imread([imgdir,'/im',num2str(i,'%04i'),'.jpg']);
 cla, imagesc(img), axis image, hold on;
 
-%display torso detected by berkeley poselets
-%plotbox(joints(:,:,i),'w--')
-limbs = [1 2; 3 4; 4 5; 6 7; 7 8; 9 10; 10 11; 12 13; 13 14];
-
-joint = transpose(joints(1:2,:,i));% 这里将标注文件中　2*14 转置　14*2
-
-DrawStickman(sticks, img, colors, thickness, drawidx, drawfullskeleton)
+limbs = [1 2;2 3;3 4;4 5;5 6;7 8;8 9;9 10;10 11;11 12;13 14;9 4;10 3];
+joint = transpose(joints(1:2,:,i));% 这里将单个图像标注信息 2*14　维 转置　14*2　维
 
 colors = hsv(length(limbs));
 
-  for p = 1:size(limbs,1)
 
+% 测试用
+% for q = 1:size(joint,2)
+%     x = joint(q,1);
+%     y = joint(q,2);
+%     plot(x,y,'-.r*');
+%
+% end
+
+for p = 1:size(limbs,1)
     X = joint(limbs(p,:),1);
     Y = joint(limbs(p,:),2);
+    hl = line(X, Y,'color', colors(p,: ));
+    set(hl, 'LineWidth',stickwidth);
+end
 
-    %x = (X(1)+X(2))/2;
-    %y = (Y(1)+Y(2))/2 ;
-    %h = patch(x,y,colors(p,:));
-    %set(h,'FaceAlpha',0.6);
-    %set(h,'EdgeAlpha',0);
-
-    %hl = line(X, Y);
-    %set(hl, 'LineWidth', 0.5);
-
-    %x = joint(1,p);
-    %y = joint(2,p);
-    %plot(x,y,'-.r*');
-    %plot(predict(:,1), predict(:,2), 'k.', 'MarkerSize', bodyHeight/32);
-
-  end
+bodyHeight = max(joint(:,2)) - min(joint(:,2));
+plot(joint(:,1), joint(:,2), 'k.', 'MarkerSize',bodyHeight/32);

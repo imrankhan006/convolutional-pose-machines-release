@@ -1,7 +1,11 @@
+function plot_visible_skeleton(model, facealpha, predict, stickwidth)
+%
 % this function is modified on src/visualize.m function plot_visible_limbs(model, facealpha, predict, truncate, stickwidth)
 % edit by mindcont for realtime human pose estimated
+%
+% modified by Mindcont/2016
 
-function plot_visible_skeleton(model, facealpha, predict, stickwidth)
+
     % plot limbs as ellipses
     limbs = model.limbs;
     colors = hsv(length(limbs));
