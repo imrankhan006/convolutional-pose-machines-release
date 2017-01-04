@@ -22,15 +22,18 @@ fprintf('Description of selected model: %s \n', param.model(param.modelID).descr
 %test_image = 'sample_image/roger.png';
 %test_image = 'sample_image/LSP_test/im1640.jpg';
 %test_image = 'sample_image/FLIC_test/princess-diaries-2-00152201.jpg';
-%test_image = 'sample_image/videos/jpg/original_frame37.jpg';
-test_image = 'sample_image/dancer.png';
+%test_image = 'sample_image/7.jpg';
+%test_image = 'sample_image/dancer.png';
 %test_image = 'sample_image/103429.jpg';
-%test_image='sample_image/videos/jpg/jpgoriginal_frame10.jpg'
 %test_image = 'sample_image/nadal.png';
+%test_image= 'sample_image/videos/hope.jpg'
+%test_image = 'sample_image/ours/xuan2.jpg';
+%test_image = 'sample_image/vlcsnap-2017-01-01-15h45m09s142.png';
+test_image = 'sample_image/ours/xuan/xuan_9.png';
 
 %interestPart = 'head'; % to look across stages. check available names in config.m
 
-v = VideoReader('./sample_image/videos/minh_640_480.ogv');
+v = VideoReader('./sample_image/ours/V61218-161421.ogv');
 nFrames = v.NumberOfFrames;
 fprintf('video Name is:%s \nHeight: %d\nWidth: %d\nFrameRate: %d\nVideoFormat: %s\ntotalFrames: %d\n',v.Name,v.Height,v.Width,v.FrameRate,v.VideoFormat,v.NumberOfFrames);
 model = param.model(param.modelID);
@@ -52,7 +55,6 @@ net = caffe.Net(model.deployFile, model.caffemodel, 'test');
 %     title('Full Pose');
 %
 % end
-
 
 %% core: apply model on the image, to get heat maps and prediction coordinates
 figure(1);

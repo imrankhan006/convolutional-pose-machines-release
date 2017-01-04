@@ -42,4 +42,5 @@ for p = 1:size(limbs,1)
 end
 
 bodyHeight = max(joint(:,2)) - min(joint(:,2));
+axis off;
 plot(joint(:,1), joint(:,2), 'k.', 'MarkerSize',bodyHeight/32);

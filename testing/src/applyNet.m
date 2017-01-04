@@ -6,7 +6,7 @@ boxsize = model.boxsize;
 np = model.np;
 nstage = model.stage;
 %oriImg = imread(test_image);
-oriImg = test_image; %ucomment for video test 
+oriImg = test_image; %ucomment for video test
 
 %% Apply model, with searching thourgh a range of scales
 octave = param.octave;
@@ -24,7 +24,7 @@ octave = param.octave;
 %starting_scale = boxsize/(size(oriImg,1)*ending_range);
 %ending_scale = boxsize/(size(oriImg,1)*starting_range);
 %multiplier = 2.^(log2(starting_scale):(1/octave):log2(ending_scale));
-multiplier = 1.1 % fit realtime human pose estimated by mindcont 2016/12/15
+multiplier = 0.8; % fit realtime human pose estimated by mindcont 2016/12/15
 
 % data container for each scale and stage
 score = cell(nstage, length(multiplier));

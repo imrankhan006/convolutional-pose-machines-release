@@ -11,6 +11,7 @@ testing/results/
 caffePath.cfg
 models/
 *.mat
+*.avi
 testing/predicts/*
 testing/predicts/ours/*
 testing/python/.*
